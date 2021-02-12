@@ -15,7 +15,21 @@ A2. Setup
 B1. Run Training Script
     $ cd <jetson-inference>/python/training/detection/ssd
     $ python3 train_ssd.py --data=<DATA> --model-dir=<MODEL> --batch-size=2 --
-
+usage: train_ssd.py [-h] [--dataset-type DATASET_TYPE]
+                    [--datasets DATASETS [DATASETS ...]] [--balance-data]
+                    [--net NET] [--freeze-base-net] [--freeze-net]
+                    [--mb2-width-mult MB2_WIDTH_MULT] [--base-net BASE_NET]
+                    [--pretrained-ssd PRETRAINED_SSD] [--resume RESUME]
+                    [--lr LR] [--momentum MOMENTUM]
+                    [--weight-decay WEIGHT_DECAY] [--gamma GAMMA]
+                    [--base-net-lr BASE_NET_LR]
+                    [--extra-layers-lr EXTRA_LAYERS_LR]
+                    [--scheduler SCHEDULER] [--milestones MILESTONES]
+                    [--t-max T_MAX] [--batch-size BATCH_SIZE]
+                    [--num-epochs NUM_EPOCHS] [--num-workers NUM_WORKERS]
+                    [--validation-epochs VALIDATION_EPOCHS]
+                    [--debug-steps DEBUG_STEPS] [--use-cuda USE_CUDA]
+                    [--checkpoint-folder CHECKPOINT_FOLDER]
 python3 detectnet-camera.py 
 --model=models/mb1-ssd.onnx 
 --class_labels=models/voc-model-labels.txt
