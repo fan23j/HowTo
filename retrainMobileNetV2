@@ -2,7 +2,7 @@
 A1. PyTorch for Python 3.6
     $ cd <jetson-inference>/build
     $ ./install-pytorch.sh
-    *note: if the PyTorch installation tool does not appear, update JetPack to version 4.2+:
+    NOTE: if the PyTorch installation tool does not appear, update JetPack to version 4.2+:
            https://developer.nvidia.com/embedded/jetpack.
 A2. Setup
     $ cd <jetson-inference>/python/training/detection/ssd
@@ -10,11 +10,6 @@ A2. Setup
     $ pip3 install -v -r requirements.txt
 
 --- B. Training ---
-<DATA> = Path to dataset
-<MODEL> = Path to store re-trained model
-B1. Run Training Script
-    $ cd <jetson-inference>/python/training/detection/ssd
-    $ python3 train_ssd.py --data=<DATA> --model-dir=<MODEL> --batch-size=2 --
 usage: train_ssd.py [-h] [--dataset-type DATASET_TYPE]
                     [--datasets DATASETS [DATASETS ...]] [--balance-data]
                     [--net NET] [--freeze-base-net] [--freeze-net]
@@ -30,9 +25,38 @@ usage: train_ssd.py [-h] [--dataset-type DATASET_TYPE]
                     [--validation-epochs VALIDATION_EPOCHS]
                     [--debug-steps DEBUG_STEPS] [--use-cuda USE_CUDA]
                     [--checkpoint-folder CHECKPOINT_FOLDER]
-python3 detectnet-camera.py 
---model=models/mb1-ssd.onnx 
---class_labels=models/voc-model-labels.txt
---input_blob=input_0
---output_cvg=scores
---output_bbox=boxes
+
+<DATA> = path to dataset
+<MODEL> = path to store re-trained model
+
+Argument	  Default	Description
+--data	       data/	the location of the dataset
+--model-dir	   models/	directory to output the trained model checkpoints
+--resume	   None	    path to an existing checkpoint to resume training from
+--batch-size   4	    try increasing depending on available memory
+--num-epochs   30	    up to 100 is desirable, but will increase training time
+--num-workers  2	    number of data loader threads (0 = disable multithreading)
+
+NOTE: When working with the NVIDIA Jetson Nano, it would be best to lower batch-size to 2 and workers to 1.
+      Higher batch-size and num threads may cause process to be killed due to memory overload.
+      
+B1. Run Training Script
+    $ cd <jetson-inference>/python/training/detection/ssd
+    $ python3 train_ssd.py --data=<DATA> --model-dir=<MODEL> --batch-size=2 --num-workers=1 --num-epochs=100
+
+B2. Converting Re-trained Model to ONNX
+        -custom models need to be in a specific format. ONXX files are supported.
+    $ cd <jetson-inference>/python/training/detection/ssd
+    $ python3 onxx_export.py --model-dir=<MODEL>
+
+--- C. Running the Model with xEyes---
+ONXX = name of .onxx file
+LABFILE = name of labels .txt file
+<LABELS> = path to class labels .txt file
+    $cd build_xeyes/bin
+    $./xeyes.out --model=<MODEL>/ONXX.onxx
+    --labels=<LABELS>/LABFILE.txt
+    --input_blob=input_0
+    --output_cvg=scores
+    --output_bbox=boxes
+    
