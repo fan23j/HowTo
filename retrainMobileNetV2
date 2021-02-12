@@ -1,0 +1,24 @@
+--- A. Preliminary Installations ---
+A1. PyTorch for Python 3.6
+    $ cd <jetson-inference>/build
+    $ ./install-pytorch.sh
+    *note: if the PyTorch installation tool does not appear, update JetPack to version 4.2+:
+           https://developer.nvidia.com/embedded/jetpack.
+A2. Setup
+    $ cd <jetson-inference>/python/training/detection/ssd
+    $ wget https://nvidia.box.com/shared/static/djf5w54rjvpqocsiztzaandq1m3avr7c.pth -O models/mobilenet-v1-ssd-mp-0_675.pth
+    $ pip3 install -v -r requirements.txt
+
+--- B. Training ---
+<DATA> = Path to dataset
+<MODEL> = Path to store re-trained model
+B1. Run Training Script
+    $ cd <jetson-inference>/python/training/detection/ssd
+    $ python3 train_ssd.py --data=<DATA> --model-dir=<MODEL> --batch-size=2 --
+
+python3 detectnet-camera.py 
+--model=models/mb1-ssd.onnx 
+--class_labels=models/voc-model-labels.txt
+--input_blob=input_0
+--output_cvg=scores
+--output_bbox=boxes
