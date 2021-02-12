@@ -4,6 +4,28 @@ A1. PyTorch for Python 3.6
     $ ./install-pytorch.sh
     NOTE: if the PyTorch installation tool does not appear, update JetPack to version 4.2+:
            https://developer.nvidia.com/embedded/jetpack.
+           
+            NOTE: Skip "Load Pretrained Model" section if retraining SSDMobileNetV2
+            --- Load Pretrained Model ---
+                $ cd <jetson-inference>/tools
+                $ ./download-models.sh
+                Use navigator to select models to install
+                
+                Models relevant to pedestrian detection:
+                Network	CLI argument	NetworkType         enum	            Object classes
+                
+                SSD-Mobilenet-v1	    ssd-mobilenet-v1	SSD_MOBILENET_V1	91 (COCO classes)
+                SSD-Mobilenet-v2	    ssd-mobilenet-v2	SSD_MOBILENET_V2	91 (COCO classes)
+                SSD-Inception-v2	    ssd-inception-v2	SSD_INCEPTION_V2	91 (COCO classes)
+                ped-100	                pednet	            PEDNET	            pedestrians
+                multiped-500	        multiped	        PEDNET_MULTI	    pedestrians, luggage
+                facenet-120	            facenet	            FACENET	            faces
+                
+                Pass in Network CLI argument of desired model as --model argument for xeyes.out.
+                No --model specification will run default model: SSD-Mobilenet-v2
+                    $ xeyes.out --model=SSD-Inception-v2
+            --- Load Pretrained Model ---
+
 A2. Setup
     $ cd <jetson-inference>/python/training/detection/ssd
     $ wget https://nvidia.box.com/shared/static/djf5w54rjvpqocsiztzaandq1m3avr7c.pth -O models/mobilenet-v1-ssd-mp-0_675.pth
